@@ -35,7 +35,13 @@ export default createMuiTheme({
   // ----------------------------------------------------------------------
 
   typography: {
-      fontFamily: ['Lato', 'Roboto'].join(',')    
+      fontFamily: ['Lato', 'Roboto'].join(','),
+      navtab: {
+        textTransform: 'none',
+        fontFamily: 'Raleway',
+        fontWeight: 400,
+        color: 'white',
+      },
   },
 
 
@@ -43,12 +49,6 @@ export default createMuiTheme({
   // COMPONENTS 
   // ----------------------------------------------------------------------
 
-  navtab: {
-    textTransform: 'none',
-    fontFamily: 'Raleway',
-    fontWeight: 400,
-    color: 'white',
-  },
   navbtn: {
     backgroundColor: `${orange}`,
     fontFamily: 'Pacifico',

@@ -3,6 +3,8 @@ import Typograph from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -13,10 +15,6 @@ import logo from '../icons/logo.svg';
 const logo_height = 5;
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        padding: 0,
-        margin: 0,
-    },
     appBar: {
         backgroundColor: theme.palette.bg_tertiary.main,
         
@@ -33,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     },
     tabs: {
         '& .MuiTab-root': {
-            ...theme.navtab,
+            ...theme.typography.navtab,
             minWidth: '0',
         },
         '& .MuiTabs-indicator': {
@@ -42,7 +40,19 @@ const useStyles = makeStyles(theme => ({
     },
     btnAppbar: {
         ...theme.navbtn
-    }
+    },
+    tabMenu: {
+        background: theme.palette.bg_tertiary.main,
+        color: '#fff',
+        borderRadius: 0
+    },
+    menuItem: {
+        ...theme.typography.navtab,
+        opacity: .7,
+        '&:hover': {
+            opacity: 1
+        }
+    },
 }));
 
 function ElevationScroll(props) {
@@ -56,8 +66,11 @@ function ElevationScroll(props) {
 }
 
 export default function Header (props) {
-    const [tabValue, setTabValue] = React.useState(0);
     const classes = useStyles();
+    const [tabValue, setTabValue] = React.useState(0);
+    const [anchorEl, setAnchorEl] = React.useState(null);    // anchor element for menu
+    const [open, setOpen] = React.useState(false);           // whether or not menu is open
+
 
     // ------------------------
     //  Hooks
@@ -74,7 +87,22 @@ export default function Header (props) {
     // ------------------------
     //  Handlers
     // ------------------------
-    const handleChange = (event, newValue) => setTabValue(newValue);
+    const handleTabChange = (event, newValue) => setTabValue(newValue);
+
+    const handleTabClick = (e) => {
+        setAnchorEl(e.currentTarget);
+        setOpen(true);
+    }
+
+    const handleMenuClose = (e) => {
+        setAnchorEl(null);
+        setOpen(false);
+    }
+
+    const handleMenuItemClick = () => {
+        setTabValue(1); // set services tab as active
+        handleMenuClose();
+    }
 
     return (
         <React.Fragment>
@@ -84,15 +112,51 @@ export default function Header (props) {
                         <a className={classes.logo} href="/" component={Link} to="/"><img src={logo} /> </a>
                         
                         <div style={{width:'100%', display: 'flex', justifyContent: 'flex-end'}}>
-                            <Tabs className={classes.tabs} value={tabValue} onChange={handleChange} >
-                                <Tab label="Home"           component={Link} to="/"/>
-                                <Tab label="Services"       component={Link} to="/services"/>
-                                <Tab label="The Revolution" component={Link} to="/revolution"/>
-                                <Tab label="About Us"       component={Link} to="/about"/>
-                                <Tab label="Contact Us"     component={Link} to="/contact"/>
+                            <Tabs className={classes.tabs} value={tabValue} onChange={handleTabChange} >
+                                <Tab label="Home"           
+                                     component={Link} to="/"
+                                />
+                                <Tab label="Services"       
+                                     component={Link} to="/services"
+                                     aria-owns={anchorEl ? "tab-menu" : undefined}
+                                     aria-haspopup={anchorEl ? true : undefined}
+                                     onMouseOver={e => handleTabClick(e)}
+                                />
+                                <Tab label="The Revolution" 
+                                     component={Link} to="/revolution"
+                                        
+                                />
+                                <Tab label="About Us"       
+                                     component={Link} to="/about"
+
+                                />
+                                <Tab label="Contact Us"     
+                                     component={Link} to="/contact"
+                                        
+                                />
                             </Tabs>
                             <Button className={classes.btnAppbar} variant="contained" color="primary" disableElevation>Free Estimate</Button>
                         </div>
+
+                        <Menu id="tab-menu" classes={{paper: classes.tabMenu}} elevation={0}
+                                            anchorEl={anchorEl} 
+                                            open={open} 
+                                            onClose={handleMenuClose}
+                                            MenuListProps={{onMouseLeave: handleMenuClose}}
+                        >
+                            <MenuItem classes={{root: classes.menuItem, selected: classes.menuItemSelected}}
+                                      onClick={handleMenuItemClick} 
+                                      component={Link} to="/services">Services</MenuItem>
+                            <MenuItem classes={{root: classes.menuItem}}
+                                      onClick={handleMenuItemClick} 
+                                      component={Link} to="/customsoftware">Custom Software Development</MenuItem>
+                            <MenuItem classes={{root: classes.menuItem}}
+                                      onClick={handleMenuItemClick}
+                                      component={Link} to="/mobileapps">Mobile Development</MenuItem>
+                            <MenuItem classes={{root: classes.menuItem}}
+                                      onClick={handleMenuItemClick}
+                                      component={Link} to="/websites">Website Development</MenuItem>
+                        </Menu>
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>
