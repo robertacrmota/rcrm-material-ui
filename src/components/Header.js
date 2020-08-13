@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     menuItem: {
         ...theme.typography.navtab,
         opacity: .7,
+        '& .selected': {
+            color: 'red'
+        },  
         '&:hover': {
             opacity: 1
         }
@@ -70,7 +73,14 @@ export default function Header (props) {
     const [tabValue, setTabValue] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);    // anchor element for menu
     const [open, setOpen] = React.useState(false);           // whether or not menu is open
+    const [selectedMenuIndex, setSelectedMenuIndex] = React.useState(0); // which menu item idx is selected
 
+    const menuOptions = [
+            {name: "Services", route: "/services"},
+            {name: "Custom Software Development", route: "/customsoftware"},
+            {name: "Mobile Development", route: "/mobileapps"},
+            {name: "Website Development", route: "/websites"},
+    ];
 
     // ------------------------
     //  Hooks
@@ -78,10 +88,14 @@ export default function Header (props) {
     React.useEffect(() => {
         // when header is loaded, check current path and update the active navbar tab accordingly
         if(window.location.pathname === "/" && tabValue !== 0) setTabValue(0)
-        else if (window.location.pathname === "/services" && tabValue !== 1) setTabValue(1)
         else if (window.location.pathname === "/revolution" && tabValue !== 2) setTabValue(2)
         else if (window.location.pathname === "/about" && tabValue !== 3) setTabValue(3)
         else if (window.location.pathname === "/contact" && tabValue !== 4) setTabValue(4)
+
+        else if (window.location.pathname === "/services" && tabValue !== 1) {setTabValue(1); setSelectedMenuIndex(0); }
+        else if (window.location.pathname === "/customsoftware" && tabValue !== 1) {setTabValue(1); setSelectedMenuIndex(1); }
+        else if (window.location.pathname === "/mobileapps" && tabValue !== 1) {setTabValue(1); setSelectedMenuIndex(2); }
+        else if (window.location.pathname === "/websites" && tabValue !== 1) {setTabValue(1); setSelectedMenuIndex(3); }
     }, [tabValue]);
 
     // ------------------------
@@ -99,8 +113,9 @@ export default function Header (props) {
         setOpen(false);
     }
 
-    const handleMenuItemClick = () => {
-        setTabValue(1); // set services tab as active
+    const handleMenuItemClick = (e, idx) => {
+        setSelectedMenuIndex(idx);
+        setTabValue(1);     // set services tab as active
         handleMenuClose();
     }
 
@@ -144,18 +159,14 @@ export default function Header (props) {
                                             onClose={handleMenuClose}
                                             MenuListProps={{onMouseLeave: handleMenuClose}}
                         >
-                            <MenuItem classes={{root: classes.menuItem, selected: classes.menuItemSelected}}
-                                      onClick={handleMenuItemClick} 
-                                      component={Link} to="/services">Services</MenuItem>
-                            <MenuItem classes={{root: classes.menuItem}}
-                                      onClick={handleMenuItemClick} 
-                                      component={Link} to="/customsoftware">Custom Software Development</MenuItem>
-                            <MenuItem classes={{root: classes.menuItem}}
-                                      onClick={handleMenuItemClick}
-                                      component={Link} to="/mobileapps">Mobile Development</MenuItem>
-                            <MenuItem classes={{root: classes.menuItem}}
-                                      onClick={handleMenuItemClick}
-                                      component={Link} to="/websites">Website Development</MenuItem>
+                            {menuOptions.map((opt, idx) => (
+                                <MenuItem key={opt.name + '-menu-item'}
+                                          classes={{root: classes.menuItem, selected: classes.menuItemSelected}}
+                                          onClick={e => handleMenuItemClick(e, idx)} 
+                                          selected={selectedMenuIndex === idx && tabValue == 1}
+                                          component={Link} to={opt.route}>{opt.name}
+                                </MenuItem>
+                            ))}
                         </Menu>
                     </Toolbar>
                 </AppBar>
