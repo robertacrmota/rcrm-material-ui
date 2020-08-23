@@ -1,8 +1,12 @@
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Typograph from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {useTheme} from '@material-ui/core/styles';
 import {makeStyles} from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,8 +15,10 @@ import Tab from '@material-ui/core/Tab';
 import {Link} from "react-router-dom";
 import React from 'react';
 
+import MenuIcon from '@material-ui/icons/Menu';
 import logo from '../icons/logo.svg';
-const logo_height = 5;
+const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+const logo_height = 6;
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -23,11 +29,33 @@ const useStyles = makeStyles(theme => ({
         height: `${logo_height}rem`,
         '& img': {
             height: '100%'
+        },
+        [theme.breakpoints.down("md")] : {
+            height: `${logo_height-1}rem`,
+        },
+        [theme.breakpoints.down("xs")] : {
+            height: `${logo_height-3}rem`,
         }
     },
     toolbarOffset: {
         ... theme.mixins.toolbar,
-        height: `${logo_height}rem`
+        height: `${logo_height}rem`,
+        [theme.breakpoints.down("md")] : {
+            height: `${logo_height-1}rem`,
+        },
+        [theme.breakpoints.down("xs")] : {
+            height: `${logo_height-3}rem`,
+        }
+    },
+    drawerIconContainer: {
+        marginLeft: 'auto',
+        "&:hover": {
+            backgroundColor: 'transparent'
+        }
+    },
+    drawerIcon: {
+        height: '1.5rem',
+        width: '1.5rem'
     },
     tabs: {
         '& .MuiTab-root': {
@@ -70,9 +98,13 @@ function ElevationScroll(props) {
 
 export default function Header (props) {
     const classes = useStyles();
+    const theme = useTheme();                                            // gives access to the theme used in this component
+    const mdMediaQuery = useMediaQuery(theme.breakpoints.down("md"));
+
+    const [openDrawer, setOpenDrawer] = React.useState(false);
     const [tabValue, setTabValue] = React.useState(0);
-    const [anchorEl, setAnchorEl] = React.useState(null);    // anchor element for menu
-    const [open, setOpen] = React.useState(false);           // whether or not menu is open
+    const [anchorEl, setAnchorEl] = React.useState(null);                // anchor element for menu
+    const [openMenu, setOpenMenu] = React.useState(false);               // whether or not menu is open
     const [selectedMenuIndex, setSelectedMenuIndex] = React.useState(0); // which menu item idx is selected
 
     const menuOptions = [
@@ -105,12 +137,12 @@ export default function Header (props) {
 
     const handleTabClick = (e) => {
         setAnchorEl(e.currentTarget);
-        setOpen(true);
+        setOpenMenu(true);
     }
 
     const handleMenuClose = (e) => {
         setAnchorEl(null);
-        setOpen(false);
+        setOpenMenu(false);
     }
 
     const handleMenuItemClick = (e, idx) => {
@@ -119,6 +151,69 @@ export default function Header (props) {
         handleMenuClose();
     }
 
+    // ------------------------
+    //  Components
+    // ------------------------
+
+    const tabsComponent = (
+        <React.Fragment>
+            <div style={{width:'100%', display: 'flex', justifyContent: 'flex-end'}}>
+                <Tabs className={classes.tabs} value={tabValue} onChange={handleTabChange} >
+                    <Tab label="Home"           
+                            component={Link} to="/"
+                    />
+                    <Tab label="Services"       
+                            component={Link} to="/services"
+                            aria-owns={anchorEl ? "tab-menu" : undefined}
+                            aria-haspopup={anchorEl ? true : undefined}
+                            onMouseOver={e => handleTabClick(e)}
+                    />
+                    <Tab label="The Revolution" 
+                            component={Link} to="/revolution"        
+                    />
+                    <Tab label="About Us"       
+                            component={Link} to="/about"
+                    />
+                    <Tab label="Contact Us"     
+                            component={Link} to="/contact"
+                    />
+                </Tabs>
+                <Button className={classes.btnAppbar} variant="contained" color="primary" disableElevation>Free Estimate</Button>
+            </div>
+
+            <Menu id="tab-menu" classes={{paper: classes.tabMenu}} elevation={0}
+                                anchorEl={anchorEl} 
+                                open={openMenu} 
+                                onClose={handleMenuClose}
+                                MenuListProps={{onMouseLeave: handleMenuClose}}>
+
+                {menuOptions.map((opt, idx) => (
+                    <MenuItem key={opt.name + '-menu-item'}
+                                classes={{root: classes.menuItem, selected: classes.menuItemSelected}}
+                                onClick={e => handleMenuItemClick(e, idx)} 
+                                selected={selectedMenuIndex === idx && tabValue == 1}
+                                component={Link} to={opt.route}>{opt.name}
+                    </MenuItem>
+                ))}
+
+            </Menu>
+        </React.Fragment>
+    );
+
+    const drawerComponent = (
+        <React.Fragment>
+            <SwipeableDrawer open={openDrawer} disableBackdropTransition={!iOS} disableDiscovery={iOS}
+                            onOpen={() => setOpenDrawer(true)} 
+                            onClose={() => setOpenDrawer(false)}>
+                            HI!
+            </SwipeableDrawer>
+            <IconButton className={classes.drawerIconContainer} disableRipple
+                        onClick={() => setOpenDrawer(!openDrawer)}>
+                    <MenuIcon className={classes.drawerIcon}/>       
+            </IconButton>
+        </React.Fragment>
+    );
+
     return (
         <React.Fragment>
             <ElevationScroll>
@@ -126,48 +221,7 @@ export default function Header (props) {
                     <Toolbar disableGutters>
                         <a className={classes.logo} href="/" component={Link} to="/"><img src={logo} /> </a>
                         
-                        <div style={{width:'100%', display: 'flex', justifyContent: 'flex-end'}}>
-                            <Tabs className={classes.tabs} value={tabValue} onChange={handleTabChange} >
-                                <Tab label="Home"           
-                                     component={Link} to="/"
-                                />
-                                <Tab label="Services"       
-                                     component={Link} to="/services"
-                                     aria-owns={anchorEl ? "tab-menu" : undefined}
-                                     aria-haspopup={anchorEl ? true : undefined}
-                                     onMouseOver={e => handleTabClick(e)}
-                                />
-                                <Tab label="The Revolution" 
-                                     component={Link} to="/revolution"
-                                        
-                                />
-                                <Tab label="About Us"       
-                                     component={Link} to="/about"
-
-                                />
-                                <Tab label="Contact Us"     
-                                     component={Link} to="/contact"
-                                        
-                                />
-                            </Tabs>
-                            <Button className={classes.btnAppbar} variant="contained" color="primary" disableElevation>Free Estimate</Button>
-                        </div>
-
-                        <Menu id="tab-menu" classes={{paper: classes.tabMenu}} elevation={0}
-                                            anchorEl={anchorEl} 
-                                            open={open} 
-                                            onClose={handleMenuClose}
-                                            MenuListProps={{onMouseLeave: handleMenuClose}}
-                        >
-                            {menuOptions.map((opt, idx) => (
-                                <MenuItem key={opt.name + '-menu-item'}
-                                          classes={{root: classes.menuItem, selected: classes.menuItemSelected}}
-                                          onClick={e => handleMenuItemClick(e, idx)} 
-                                          selected={selectedMenuIndex === idx && tabValue == 1}
-                                          component={Link} to={opt.route}>{opt.name}
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                        {mdMediaQuery ? drawerComponent : tabsComponent}
                     </Toolbar>
                 </AppBar>
             </ElevationScroll>
