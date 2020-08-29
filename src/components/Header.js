@@ -59,6 +59,15 @@ const useStyles = makeStyles((theme) => ({
     height: "1.5rem",
     width: "1.5rem",
   },
+  drawerPaper: {
+    backgroundColor: theme.palette.bg_tertiary.main,
+  },
+  drawerItemText: {
+    ...theme.typography.navtab,
+  },
+  drawerItemEstimate: {
+    backgroundColor: theme.palette.orange.main,
+  },
   tabs: {
     "& .MuiTab-root": {
       ...theme.typography.navtab,
@@ -101,7 +110,7 @@ function ElevationScroll(props) {
 export default function Header(props) {
   const classes = useStyles();
   const theme = useTheme(); // gives access to the theme used in this component
-  const mdMediaQuery = useMediaQuery(theme.breakpoints.down("md"));
+  const mdMediaQuery = useMediaQuery(theme.breakpoints.up("md"));
 
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [tabValue, setTabValue] = React.useState(0);
@@ -240,6 +249,7 @@ export default function Header(props) {
         disableDiscovery={iOS}
         onOpen={() => setOpenDrawer(true)}
         onClose={() => setOpenDrawer(false)}
+        classes={{ paper: classes.drawerPaper }}
       >
         <List disablePadding>
           <ListItem
@@ -249,7 +259,9 @@ export default function Header(props) {
             component={Link}
             to="/"
           >
-            <ListItemText disableTypography>Home</ListItemText>
+            <ListItemText disableTypography className={classes.drawerItemText}>
+              Home
+            </ListItemText>
           </ListItem>
           <ListItem
             divider
@@ -258,7 +270,9 @@ export default function Header(props) {
             component={Link}
             to="/services"
           >
-            <ListItemText disableTypography>Services</ListItemText>
+            <ListItemText disableTypography className={classes.drawerItemText}>
+              Services
+            </ListItemText>
           </ListItem>
           <ListItem
             divider
@@ -267,7 +281,9 @@ export default function Header(props) {
             component={Link}
             to="/revolution"
           >
-            <ListItemText disableTypography>The Revolution</ListItemText>
+            <ListItemText disableTypography className={classes.drawerItemText}>
+              The Revolution
+            </ListItemText>
           </ListItem>
           <ListItem
             divider
@@ -276,7 +292,9 @@ export default function Header(props) {
             component={Link}
             to="/about"
           >
-            <ListItemText disableTypography>About Us</ListItemText>
+            <ListItemText disableTypography className={classes.drawerItemText}>
+              About Us
+            </ListItemText>
           </ListItem>
           <ListItem
             divider
@@ -285,16 +303,21 @@ export default function Header(props) {
             component={Link}
             to="/contact"
           >
-            <ListItemText disableTypography>Contact Us</ListItemText>
+            <ListItemText disableTypography className={classes.drawerItemText}>
+              Contact Us
+            </ListItemText>
           </ListItem>
           <ListItem
             divider
             button
+            className={classes.drawerItemEstimate}
             onClick={() => setOpenDrawer(false)}
             component={Link}
             to="/estimate"
           >
-            <ListItemText disableTypography>Free Estimate</ListItemText>
+            <ListItemText disableTypography className={classes.drawerItemText}>
+              Free Estimate
+            </ListItemText>
           </ListItem>
         </List>
       </SwipeableDrawer>
@@ -316,8 +339,7 @@ export default function Header(props) {
             <a className={classes.logo} href="/" component={Link} to="/">
               <img src={logo} />{" "}
             </a>
-
-            {mdMediaQuery ? drawerComponent : tabsComponent}
+            {mdMediaQuery ? tabsComponent : drawerComponent}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
