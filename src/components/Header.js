@@ -122,42 +122,37 @@ export default function Header(props) {
   const [openMenu, setOpenMenu] = React.useState(false); // whether or not menu is open
   const [selectedMenuIndex, setSelectedMenuIndex] = React.useState(0); // which menu item idx is selected
 
+  const routes = [
+    { name: "Home", link: "/", tabValue: 0 },
+    { name: "Services", link: "/services", tabValue: 1 },
+    { name: "The Revolution", link: "/revolution", tabValue: 2 },
+    { name: "About Us", link: "/about", tabValue: 3 },
+    { name: "Contact Us", link: "/contact", tabValue: 4 },
+  ];
+
+  // services tab's menu
   const menuOptions = [
-    { name: "Services", route: "/services" },
-    { name: "Custom Software Development", route: "/customsoftware" },
-    { name: "Mobile Development", route: "/mobileapps" },
-    { name: "Website Development", route: "/websites" },
+    { name: "Services", link: "/services", tabValue: 1, menuIndex: 0 },
+    { name: "Custom Software Development", link: "/customsoftware", tabValue: 1, menuIndex: 1, },
+    { name: "Mobile Development", link: "/mobileapps", tabValue: 1, menuIndex: 2, },
+    { name: "Website Development", link: "/websites", tabValue: 1, menuIndex: 3, },
   ];
 
   // ------------------------
   //  Hooks
   // ------------------------
+
   React.useEffect(() => {
     // when header is loaded, check current path and update the active navbar tab accordingly
-    if (window.location.pathname === "/" && tabValue !== 0) setTabValue(0);
-    else if (window.location.pathname === "/revolution" && tabValue !== 2)
-      setTabValue(2);
-    else if (window.location.pathname === "/about" && tabValue !== 3)
-      setTabValue(3);
-    else if (window.location.pathname === "/contact" && tabValue !== 4)
-      setTabValue(4);
-    else if (window.location.pathname === "/services" && tabValue !== 1) {
-      setTabValue(1);
-      setSelectedMenuIndex(0);
-    } else if (
-      window.location.pathname === "/customsoftware" &&
-      tabValue !== 1
-    ) {
-      setTabValue(1);
-      setSelectedMenuIndex(1);
-    } else if (window.location.pathname === "/mobileapps" && tabValue !== 1) {
-      setTabValue(1);
-      setSelectedMenuIndex(2);
-    } else if (window.location.pathname === "/websites" && tabValue !== 1) {
-      setTabValue(1);
-      setSelectedMenuIndex(3);
-    }
-  }, [tabValue]);
+    [...routes, ...menuOptions].forEach((route) => {
+      if (window.location.pathname === route.link && tabValue !== route.tabValue) {
+        setTabValue(route.tabValue);
+        if (route.menuIndex && selectedMenuIndex !== route.menuIndex) {
+          setSelectedMenuIndex(route.menuIndex);
+        }
+      }
+    });
+  }, [tabValue, selectedMenuIndex, routes, menuOptions]);
 
   // ------------------------
   //  Handlers
@@ -199,18 +194,16 @@ export default function Header(props) {
           value={tabValue}
           onChange={handleTabChange}
         >
-          <Tab label="Home" component={Link} to="/" />
-          <Tab
-            label="Services"
-            component={Link}
-            to="/services"
-            aria-owns={anchorEl ? "tab-menu" : undefined}
-            aria-haspopup={anchorEl ? true : undefined}
-            onMouseOver={(e) => handleTabClick(e)}
-          />
-          <Tab label="The Revolution" component={Link} to="/revolution" />
-          <Tab label="About Us" component={Link} to="/about" />
-          <Tab label="Contact Us" component={Link} to="/contact" />
+          {routes.map((route, index) => (
+            <Tab key={`tab-${route}${index}`} 
+                 label={route.name} 
+                 component={Link} to={route.link} 
+                 aria-owns={route.tabValue === 1 ? anchorEl ? "tab-menu" : undefined : undefined}
+                 aria-haspopup={route.tabValue === 1 ? anchorEl ? true : undefined : undefined}
+                 onMouseOver={route.tabValue === 1 ? (e) => handleTabClick(e) : undefined}
+            />
+          ))}
+
         </Tabs>
         <Button
           className={classes.btnAppbar}
@@ -230,6 +223,7 @@ export default function Header(props) {
         open={openMenu}
         onClose={handleMenuClose}
         MenuListProps={{ onMouseLeave: handleMenuClose }}
+        keepMounted
       >
         {menuOptions.map((opt, idx) => (
           <MenuItem
@@ -241,7 +235,7 @@ export default function Header(props) {
             onClick={(e) => handleMenuItemClick(e, idx)}
             selected={selectedMenuIndex === idx && tabValue == 1}
             component={Link}
-            to={opt.route}
+            to={opt.link}
           >
             {opt.name}
           </MenuItem>
@@ -261,127 +255,44 @@ export default function Header(props) {
         classes={{ paper: classes.drawerPaper }}
       >
         <List disablePadding>
-          <ListItem
-            divider
-            button
-            selected={tabValue === 0}
-            onClick={(e) => handleDrawerItemClick(e, 0)}
-            component={Link}
-            to="/"
-          >
-            <ListItemText
-              disableTypography
-              className={
-                tabValue === 0
-                  ? [classes.drawerItemText, classes.drawerItemTextSelected]
-                  : classes.drawerItemText
-              }
+          {routes.map((route, index) => (
+            <ListItem key={`list-item-${route}${index}`} 
+                      divider button
+                      selected={tabValue === route.tabValue}
+                      onClick={(e) => handleDrawerItemClick(e, route.tabValue)}
+                      component={Link}
+                      to={route.link}
             >
-              Home
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            selected={tabValue === 1}
-            onClick={(e) => handleDrawerItemClick(e, 1)}
-            component={Link}
-            to="/services"
+              <ListItemText disableTypography
+                            className={ tabValue === route.tabValue ? 
+                                        [classes.drawerItemText, classes.drawerItemTextSelected] : 
+                                        classes.drawerItemText
+                            }
+              >
+                  {route.name}
+              </ListItemText>
+            </ListItem>
+          ))}
+          <ListItem divider button
+                    className={classes.drawerItemEstimate}
+                    selected={tabValue === 5}
+                    onClick={(e) => handleDrawerItemClick(e, 5)}
+                    component={Link}
+                    to="/estimate"
           >
-            <ListItemText
-              disableTypography
-              className={
-                tabValue === 1
-                  ? [classes.drawerItemText, classes.drawerItemTextSelected]
-                  : classes.drawerItemText
-              }
-            >
-              Services
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            selected={tabValue === 2}
-            onClick={(e) => handleDrawerItemClick(e, 2)}
-            component={Link}
-            to="/revolution"
-          >
-            <ListItemText
-              disableTypography
-              className={
-                tabValue === 2
-                  ? [classes.drawerItemText, classes.drawerItemTextSelected]
-                  : classes.drawerItemText
-              }
-            >
-              The Revolution
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            selected={tabValue === 3}
-            onClick={(e) => handleDrawerItemClick(e, 3)}
-            component={Link}
-            to="/about"
-          >
-            <ListItemText
-              disableTypography
-              className={
-                tabValue === 3
-                  ? [classes.drawerItemText, classes.drawerItemTextSelected]
-                  : classes.drawerItemText
-              }
-            >
-              About Us
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            selected={tabValue === 4}
-            onClick={(e) => handleDrawerItemClick(e, 4)}
-            component={Link}
-            to="/contact"
-          >
-            <ListItemText
-              disableTypography
-              className={
-                tabValue === 4
-                  ? [classes.drawerItemText, classes.drawerItemTextSelected]
-                  : classes.drawerItemText
-              }
-            >
-              Contact Us
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            divider
-            button
-            className={classes.drawerItemEstimate}
-            selected={tabValue === 5}
-            onClick={(e) => handleDrawerItemClick(e, 5)}
-            component={Link}
-            to="/estimate"
-          >
-            <ListItemText
-              disableTypography
-              className={
-                tabValue === 5
-                  ? [classes.drawerItemText, classes.drawerItemTextSelected]
-                  : classes.drawerItemText
-              }
+            <ListItemText disableTypography
+                          className={ tabValue === 5 ? [classes.drawerItemText, classes.drawerItemTextSelected]
+                                                     : classes.drawerItemText
+                          }
             >
               Free Estimate
             </ListItemText>
           </ListItem>
         </List>
       </SwipeableDrawer>
-      <IconButton
-        className={classes.drawerIconContainer}
-        disableRipple
-        onClick={() => setOpenDrawer(!openDrawer)}
+      <IconButton  disableRipple 
+                   className={classes.drawerIconContainer}
+                   onClick={() => setOpenDrawer(!openDrawer)}
       >
         <MenuIcon className={classes.drawerIcon} />
       </IconButton>
