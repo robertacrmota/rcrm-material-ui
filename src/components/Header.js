@@ -26,6 +26,7 @@ const logo_height = 6;
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: theme.palette.bg_tertiary.main,
+    zIndex: theme.zIndex.modal + 1
   },
   logo: {
     height: `${logo_height}rem`,
@@ -67,7 +68,9 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.7,
   },
   drawerItemTextSelected: {
-    opacity: 1,
+    "& .MuiListItemText-root":{
+      opacity: 1,
+    }
   },
   drawerItemEstimate: {
     backgroundColor: theme.palette.orange.main,
@@ -84,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   btnAppbar: {
     ...theme.navbtn,
   },
-  tabMenu: {
+  tabMenuPaper: {
     background: theme.palette.bg_tertiary.main,
     color: "#fff",
     borderRadius: 0,
@@ -217,7 +220,8 @@ export default function Header(props) {
 
       <Menu
         id="tab-menu"
-        classes={{ paper: classes.tabMenu }}
+        style={{zIndex: 1302}}
+        classes={{paper: classes.tabMenuPaper }}
         elevation={0}
         anchorEl={anchorEl}
         open={openMenu}
@@ -254,37 +258,30 @@ export default function Header(props) {
         onClose={() => setOpenDrawer(false)}
         classes={{ paper: classes.drawerPaper }}
       >
+        <div className={classes.toolbarOffset}></div>
         <List disablePadding>
           {routes.map((route, index) => (
             <ListItem key={`list-item-${route}${index}`} 
                       divider button
                       selected={tabValue === route.tabValue}
+                      classes={{selected: classes.drawerItemTextSelected}}
                       onClick={(e) => handleDrawerItemClick(e, route.tabValue)}
                       component={Link}
                       to={route.link}
             >
-              <ListItemText disableTypography
-                            className={ tabValue === route.tabValue ? 
-                                        [classes.drawerItemText, classes.drawerItemTextSelected] : 
-                                        classes.drawerItemText
-                            }
-              >
+              <ListItemText disableTypography className={ classes.drawerItemText } >
                   {route.name}
               </ListItemText>
             </ListItem>
           ))}
           <ListItem divider button
-                    className={classes.drawerItemEstimate}
+                    classes={{root: classes.drawerItemEstimate, selected: classes.drawerItemTextSelected}}
                     selected={tabValue === 5}
                     onClick={(e) => handleDrawerItemClick(e, 5)}
                     component={Link}
                     to="/estimate"
           >
-            <ListItemText disableTypography
-                          className={ tabValue === 5 ? [classes.drawerItemText, classes.drawerItemTextSelected]
-                                                     : classes.drawerItemText
-                          }
-            >
+            <ListItemText disableTypography className={classes.drawerItemText}>
               Free Estimate
             </ListItemText>
           </ListItem>
