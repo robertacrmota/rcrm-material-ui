@@ -112,7 +112,7 @@ function ElevationScroll(props) {
   return React.cloneElement(children, {
     elevation: trigger ? 4 : 0,
   });
-}
+};
 
 export default function Header(props) {
   const classes = useStyles();

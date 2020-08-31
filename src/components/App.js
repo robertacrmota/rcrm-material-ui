@@ -3,13 +3,13 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import { ThemeProvider } from '@material-ui/core/styles';
 import  theme  from './Theme';
 import Header from './Header';
+import Footer from './Footer';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
         <BrowserRouter>
             <Header />
-            Hello!
             <Switch>
             <Route exact path="/" component={() => <div>Home</div>} />
             <Route exact path="/services" component={() => <div>services</div>} />
@@ -21,6 +21,7 @@ function App() {
             <Route exact path="/contact" component={() => <div>contact</div>} />
             <Route exact path="/estimate" component={() => <div>estimate</div>} />
             </Switch>
+            <Footer />
         </BrowserRouter>
     </ThemeProvider>
   );
