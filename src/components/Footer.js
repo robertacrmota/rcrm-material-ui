@@ -45,35 +45,35 @@ export default function Footer(props) {
         <Grid container justify='center' className={classes.gridContainer}>
             <Grid item className={classes.gridItem}>
               <Grid container direction='column'>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/">Home</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(0)} component={Link} to="/">Home</Grid>
               </Grid>
             </Grid>
             <Grid item className={classes.gridItem}>
               <Grid container direction='column' spacing={2}>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/services">Services</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/customsoftware">Custom Software Development</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/mobileapps">Mobile App Development</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/websites">Website Development</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(0);}} component={Link} to="/services">Services</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(1);}} component={Link} to="/customsoftware">Custom Software Development</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(2);}} component={Link} to="/mobileapps">Mobile App Development</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(3);}} component={Link} to="/websites">Website Development</Grid>
               </Grid>
             </Grid>
             <Grid item className={classes.gridItem}>
               <Grid container direction='column' spacing={2}>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/revolution">The Revolution</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/revolution">Vision</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/revolution">Technology</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/revolution">Process</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(2)} component={Link} to="/revolution">The Revolution</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(2)} component={Link} to="/revolution">Vision</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(2)} component={Link} to="/revolution">Technology</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(2)} component={Link} to="/revolution">Process</Grid>
               </Grid>
             </Grid>
             <Grid item className={classes.gridItem}>
               <Grid container direction='column' spacing={2}>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/about">About Us</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/about">History</Grid>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/about">Team</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(3)} component={Link} to="/about">About Us</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(3)} component={Link} to="/about">History</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(3)} component={Link} to="/about">Team</Grid>
               </Grid>
             </Grid>
             <Grid item className={classes.gridItem}>
               <Grid container direction='column'>
-                  <Grid item className={classes.gridItemLink} component={Link} to="/contact">Contact Us</Grid>
+                  <Grid item className={classes.gridItemLink} onClick={() => props.setTabValue(4)} component={Link} to="/contact">Contact Us</Grid>
               </Grid>
             </Grid>
         </Grid>

@@ -120,10 +120,9 @@ export default function Header(props) {
   const mdMediaQuery = useMediaQuery(theme.breakpoints.up("md"));
 
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const [tabValue, setTabValue] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null); // anchor element for menu
   const [openMenu, setOpenMenu] = React.useState(false); // whether or not menu is open
-  const [selectedMenuIndex, setSelectedMenuIndex] = React.useState(0); // which menu item idx is selected
+  
 
   const routes = [
     { name: "Home", link: "/", tabValue: 0 },
@@ -148,19 +147,19 @@ export default function Header(props) {
   React.useEffect(() => {
     // when header is loaded, check current path and update the active navbar tab accordingly
     [...routes, ...menuOptions].forEach((route) => {
-      if (window.location.pathname === route.link && tabValue !== route.tabValue) {
-        setTabValue(route.tabValue);
-        if (route.menuIndex && selectedMenuIndex !== route.menuIndex) {
-          setSelectedMenuIndex(route.menuIndex);
+      if (window.location.pathname === route.link && props.tabValue !== route.tabValue) {
+        props.setTabValue(route.tabValue);
+        if (route.menuIndex && props.selectedMenuIndex !== route.menuIndex) {
+          props.setSelectedMenuIndex(route.menuIndex);
         }
       }
     });
-  }, [tabValue, selectedMenuIndex, routes, menuOptions]);
+  }, [props.tabValue, props.selectedMenuIndex, routes, menuOptions, props]);
 
   // ------------------------
   //  Handlers
   // ------------------------
-  const handleTabChange = (event, newValue) => setTabValue(newValue);
+  const handleTabChange = (event, newValue) => props.setTabValue(newValue);
 
   const handleTabClick = (e) => {
     setAnchorEl(e.currentTarget);
@@ -173,14 +172,14 @@ export default function Header(props) {
   };
 
   const handleMenuItemClick = (e, idx) => {
-    setSelectedMenuIndex(idx);
-    setTabValue(1); // set services tab as active
+    props.setSelectedMenuIndex(idx);
+    props.setTabValue(1); // set services tab as active
     handleMenuClose();
   };
 
   const handleDrawerItemClick = (e, idx) => {
     setOpenDrawer(false);
-    setTabValue(idx);
+    props.setTabValue(idx);
   };
 
   // ------------------------
@@ -194,7 +193,7 @@ export default function Header(props) {
       >
         <Tabs
           className={classes.tabs}
-          value={tabValue}
+          value={props.tabValue}
           onChange={handleTabChange}
         >
           {routes.map((route, index) => (
@@ -237,7 +236,7 @@ export default function Header(props) {
               selected: classes.menuItemSelected,
             }}
             onClick={(e) => handleMenuItemClick(e, idx)}
-            selected={selectedMenuIndex === idx && tabValue == 1}
+            selected={props.selectedMenuIndex === idx && props.tabValue == 1}
             component={Link}
             to={opt.link}
           >
@@ -263,7 +262,7 @@ export default function Header(props) {
           {routes.map((route, index) => (
             <ListItem key={`list-item-${route}${index}`} 
                       divider button
-                      selected={tabValue === route.tabValue}
+                      selected={props.tabValue === route.tabValue}
                       classes={{selected: classes.drawerItemTextSelected}}
                       onClick={(e) => handleDrawerItemClick(e, route.tabValue)}
                       component={Link}
@@ -276,7 +275,7 @@ export default function Header(props) {
           ))}
           <ListItem divider button
                     classes={{root: classes.drawerItemEstimate, selected: classes.drawerItemTextSelected}}
-                    selected={tabValue === 5}
+                    selected={props.tabValue === 5}
                     onClick={(e) => handleDrawerItemClick(e, 5)}
                     component={Link}
                     to="/estimate"

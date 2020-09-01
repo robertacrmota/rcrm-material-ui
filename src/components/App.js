@@ -6,10 +6,20 @@ import Header from './Header';
 import Footer from './Footer';
 
 function App() {
+  const [tabValue, setTabValue] = React.useState(0);                // header tab currently selected
+  const [selectedMenuIndex, setSelectedMenuIndex] = React.useState(0); // tab's menu item currently selected
+
+  const props = {
+    tabValue, 
+    selectedMenuIndex,
+    setTabValue,
+    setSelectedMenuIndex
+  };
+
   return (
     <ThemeProvider theme={theme}>
         <BrowserRouter>
-            <Header />
+            <Header {...props} />
             <Switch>
             <Route exact path="/" component={() => <div>Home</div>} />
             <Route exact path="/services" component={() => <div>services</div>} />
@@ -21,7 +31,7 @@ function App() {
             <Route exact path="/contact" component={() => <div>contact</div>} />
             <Route exact path="/estimate" component={() => <div>estimate</div>} />
             </Switch>
-            <Footer />
+            <Footer {...props} />
         </BrowserRouter>
     </ThemeProvider>
   );
