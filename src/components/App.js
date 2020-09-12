@@ -4,6 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import  theme  from './Theme';
 import Header from './Header';
 import Footer from './Footer';
+import LandingPage from '../LandingPage';
 
 function App() {
   const [tabValue, setTabValue] = React.useState(0);                // header tab currently selected
@@ -21,7 +22,7 @@ function App() {
         <BrowserRouter>
             <Header {...props} />
             <Switch>
-            <Route exact path="/" component={() => <div>Home</div>} />
+            <Route exact path="/" component={LandingPage} />
             <Route exact path="/services" component={() => <div>services</div>} />
             <Route exact path="/customsoftware" component={() => <div>customsoftware</div>} />
             <Route exact path="/mobileapps" component={() => <div>mobileapps</div>} />

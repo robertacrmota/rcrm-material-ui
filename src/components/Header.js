@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   btnAppbar: {
-    ...theme.navbtn,
+    ...theme.estimateButton,
   },
   tabMenuPaper: {
     background: theme.palette.bg_tertiary.main,

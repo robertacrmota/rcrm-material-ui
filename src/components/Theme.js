@@ -49,7 +49,7 @@ export default createMuiTheme({
   // COMPONENTS 
   // ----------------------------------------------------------------------
 
-  navbtn: {
+  estimateButton: {
     backgroundColor: `${orange}`,
     fontFamily: 'Pacifico',
     textTransform: 'none',
