@@ -1,6 +1,5 @@
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
-import Typograph from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
@@ -86,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btnAppbar: {
     ...theme.estimateButton,
+    margin: '0 15px 0 50px',
   },
   tabMenuPaper: {
     background: theme.palette.bg_tertiary.main,
@@ -212,6 +212,7 @@ export default function Header(props) {
           variant="contained"
           color="primary"
           disableElevation
+          disableRipple
         >
           Free Estimate
         </Button>

@@ -3,7 +3,10 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const teal   = "#00B5AD",
       salmon = "#FF6565",
-      orange ='#FFBA60';
+      orange ='#FFBA60',
+      orangeLight = '#ffc880',
+      orangeDark = '#e6a756',
+      blue = '#0B72B9';
 
 export default createMuiTheme({
   // ----------------------------------------------------------------------
@@ -21,12 +24,15 @@ export default createMuiTheme({
       red: { main: '#DB2828' },
       yellow: { main: '#FBBD08' },
       green: { main: '#21BA45' },
-      orange: { main: `${orange}`},
+      orange: { light: `${orangeLight}`,
+                main: `${orange}`,
+                dark: `${orangeDark}`
+      },
 
       // bg colors
       bg_primary: { main: '#262626' },
       bg_secondary: { main: '#313233' },
-      bg_tertiary: { main: '#0B72B9' },
+      bg_tertiary: { main:  `${blue}`},
   },
 
 
@@ -42,6 +48,12 @@ export default createMuiTheme({
         fontWeight: 400,
         color: 'white',
       },
+      h2: {
+        fontFamily: 'Raleway',
+        fontSize: '2rem',
+        fontWeight: 700,
+        lineHeight: 1.5,
+      }
   },
 
 
@@ -54,8 +66,23 @@ export default createMuiTheme({
     fontFamily: 'Pacifico',
     textTransform: 'none',
     borderRadius: '5rem',
-    margin: '0 15px 0 50px',
     padding: '10px 20px',
     color: '#fff',    
+    '&:hover': {
+      backgroundColor: `${orangeLight}`,
+    },
+    '&:active': {
+      backgroundColor: `${orangeDark}`
+    }
+  }, 
+
+  radialButtonOutline: {
+    borderRadius: '5rem',
+    padding: '10px 20px',
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    borderColor: `${blue}`,
+    color: `${blue}`,
+    textTransform: 'none',
   }
 });
