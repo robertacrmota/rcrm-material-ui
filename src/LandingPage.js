@@ -1,4 +1,5 @@
 import {makeStyles, useTheme} from '@material-ui/core/styles';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Typograph from "@material-ui/core/Typography";
 import ButtonArrow from './components/ButtonArrow';
 import Button from '@material-ui/core/Button';
@@ -6,10 +7,19 @@ import Grid from '@material-ui/core/Grid';
 import React from 'react';
 
 import heroIcon from './assets/designIcon.svg';
+import customSoftwareIcon from './assets/Custom Software Icon.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
         padding: '5% 5%'
+    },
+    section: {
+        marginBottom: '4rem'
+    },
+    sectionTextItem: {
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center'
+        }
     },
     buttonsContainer: {
         padding: '5% 0'
@@ -20,18 +30,33 @@ const useStyles = makeStyles(theme => ({
     learnButton: {
         ... theme.radialButtonOutline
     },
+    learnButtonSmall: {
+        ... theme.radialButtonOutline,
+        padding: '5px 10px',
+        margin: '.7rem 0 0 0',
+        fontSize: '.7rem',
+        [theme.breakpoints.down('sm')]: {
+            margin: '1rem 0 2rem 0'
+        }
+    },
     heroText: {
         color: theme.palette.bg_tertiary.main
+    },
+    specialText: {
+        fontFamily: 'Pacifico',
+        color: theme.palette.orange.main
     }
 }));
 
 export default function LandingPage() {
     const classes = useStyles();
     const theme = useTheme();
+    const matchesSM = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
         <Grid container direction='column' className={classes.root}>
-            <Grid item>
+            {/** Hero block **********************/}
+            <Grid item className={classes.section}> 
                 <Grid container alignItems='center' spacing={1}>
                     <Grid item sm={6} xs={12}>
                         <Typograph className={classes.heroText} 
@@ -62,6 +87,32 @@ export default function LandingPage() {
                     </Grid>
                     <Grid item sm={6} xs={12}>
                         <img src={heroIcon} width='100%' height='100%' />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            {/** Services block ******************/}
+            <Grid item className={classes.section}>
+                <Grid container spacing={3} direction={matchesSM ? 'column' : 'row'} alignItems={matchesSM ? 'center' : undefined}>
+                    <Grid item className={classes.sectionTextItem}>
+                        <Typograph variant='h4'>
+                            Custom Software Development
+                        </Typograph>
+                        <Typograph variant='subtitle1'>
+                            Save Energy. Save Time. Save Money.
+                        </Typograph>
+                        <Typograph variant='subtitle1'>
+                            Complete digital solutions, from investigation to {" "} <span className={classes.specialText}>celebration</span>
+                        </Typograph>
+                        <Button variant='outlined' 
+                                disableRipple
+                                className={classes.learnButtonSmall}
+                        >
+                            <span style={{marginRight: '10px'}}>Learn More</span> <ButtonArrow width={15} height={15} fill={theme.palette.bg_tertiary.main}/>
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <img src={customSoftwareIcon} />
                     </Grid>
                 </Grid>
             </Grid>

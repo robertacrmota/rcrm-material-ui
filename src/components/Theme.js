@@ -6,7 +6,8 @@ const teal   = "#00B5AD",
       orange ='#FFBA60',
       orangeLight = '#ffc880',
       orangeDark = '#e6a756',
-      blue = '#0B72B9';
+      blue = '#0B72B9',
+      grey = '#868686';
 
 export default createMuiTheme({
   // ----------------------------------------------------------------------
@@ -53,6 +54,17 @@ export default createMuiTheme({
         fontSize: '2rem',
         fontWeight: 700,
         lineHeight: 1.5,
+      },
+      h4: {
+        fontFamily: 'Raleway',
+        fontSize: '1.75rem',
+        fontWeight: 700,
+        color: blue
+      },
+      subtitle1: {
+        fontSize: '1rem',
+        fontWeight: 300,
+        color: grey
       }
   },
 
