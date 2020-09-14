@@ -9,6 +9,7 @@ import React from 'react';
 import heroIcon from './assets/designIcon.svg';
 import customSoftwareIcon from './assets/Custom Software Icon.svg';
 import mobileAppsIcon from './assets/mobileIcon.svg';
+import websiteIcon from './assets/websiteIcon.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -149,6 +150,33 @@ export default function LandingPage() {
                     </Grid>
                 </Grid>
             </Grid>
+        
+            {/** website block ******************/}
+            <Grid item className={classes.section}>
+                <Grid container spacing={3} direction={matchesSM ? 'column' : 'row'} alignItems={matchesSM ? 'center' : undefined}>
+                    <Grid item className={classes.sectionTextItem}>
+                        <Typograph variant='h4'>
+                            Website Development
+                        </Typograph>
+                        <Typograph variant='subtitle1'>
+                            Reach More. Discover More. Sell More.
+                        </Typograph>
+                        <Typograph variant='subtitle1'>
+                            Optimized for Search Engines, built for speed.
+                        </Typograph>
+                        <Button variant='outlined' 
+                                disableRipple
+                                className={classes.learnButtonSmall}
+                        >
+                            <span style={{marginRight: '10px'}}>Learn More</span> <ButtonArrow width={15} height={15} fill={theme.palette.bg_tertiary.main}/>
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <img src={websiteIcon} />
+                    </Grid>
+                </Grid>
+            </Grid>
+
         </Grid>
     )
 };
