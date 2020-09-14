@@ -71,7 +71,7 @@ export default function Footer(props) {
                 <Grid container direction='column' spacing={2}>
                     <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(0);}} component={Link} to="/services">Services</Grid>
                     <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(1);}} component={Link} to="/customsoftware">Custom Software Development</Grid>
-                    <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(2);}} component={Link} to="/mobileapps">Mobile App Development</Grid>
+                    <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(2);}} component={Link} to="/mobileapps">iOS/Android App Development</Grid>
                     <Grid item className={classes.gridItemLink} onClick={() => {props.setTabValue(1); props.setSelectedMenuIndex(3);}} component={Link} to="/websites">Website Development</Grid>
                 </Grid>
               </Grid>

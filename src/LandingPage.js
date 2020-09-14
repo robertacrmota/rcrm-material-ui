@@ -8,13 +8,17 @@ import React from 'react';
 
 import heroIcon from './assets/designIcon.svg';
 import customSoftwareIcon from './assets/Custom Software Icon.svg';
+import mobileAppsIcon from './assets/mobileIcon.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
         padding: '5% 5%'
     },
     section: {
-        marginBottom: '4rem'
+        marginBottom: '10rem',
+        '&:nth-child(1)': {
+            marginBottom: '5rem'
+        }
     },
     sectionTextItem: {
         [theme.breakpoints.down('sm')]: {
@@ -36,7 +40,7 @@ const useStyles = makeStyles(theme => ({
         margin: '.7rem 0 0 0',
         fontSize: '.7rem',
         [theme.breakpoints.down('sm')]: {
-            margin: '1rem 0 2rem 0'
+            margin: '.5rem 0 1rem 0'
         }
     },
     heroText: {
@@ -113,6 +117,35 @@ export default function LandingPage() {
                     </Grid>
                     <Grid item>
                         <img src={customSoftwareIcon} />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            {/** iOS/Android block ******************/}
+            <Grid item className={classes.section} >
+                <Grid container spacing={3} 
+                      direction={matchesSM ? 'column' : 'row'} 
+                      alignItems={matchesSM ? 'center' : 'undefined'}
+                      justify={matchesSM ? 'center' : 'flex-end'}>
+                    <Grid item className={classes.sectionTextItem}>
+                        <Typograph variant='h4'>
+                            iOS/Android App Development
+                        </Typograph>
+                        <Typograph variant='subtitle1'>
+                            Extend Functionality. Extend Access. Increase Engagement.
+                        </Typograph>
+                        <Typograph variant='subtitle1'>
+                            Integrate your web experience or create a standalone app {matchesSM ? null : <br />}
+                        </Typograph>
+                        <Button variant='outlined' 
+                                disableRipple
+                                className={classes.learnButtonSmall}
+                        >
+                            <span style={{marginRight: '10px'}}>Learn More</span> <ButtonArrow width={15} height={15} fill={theme.palette.bg_tertiary.main}/>
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <img src={mobileAppsIcon} />
                     </Grid>
                 </Grid>
             </Grid>

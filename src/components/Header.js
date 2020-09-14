@@ -136,7 +136,7 @@ export default function Header(props) {
   const menuOptions = [
     { name: "Services", link: "/services", tabValue: 1, menuIndex: 0 },
     { name: "Custom Software Development", link: "/customsoftware", tabValue: 1, menuIndex: 1, },
-    { name: "Mobile Development", link: "/mobileapps", tabValue: 1, menuIndex: 2, },
+    { name: "iOS/Android Development", link: "/mobileapps", tabValue: 1, menuIndex: 2, },
     { name: "Website Development", link: "/websites", tabValue: 1, menuIndex: 3, },
   ];
 
